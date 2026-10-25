@@ -2,7 +2,7 @@ import streamlit as st
 import sqlite3
 import datetime
 import os
-
+import zoneinfo
 # ------------------------------------------------------------------------------
 # PAGE CONFIGURATION & STYLING (FUN & COLORFUL VIBES)
 # ------------------------------------------------------------------------------
@@ -63,10 +63,12 @@ def init_storage():
 init_storage()
 
 def save_memory(name, emoji, message):
-    timestamp = datetime.datetime.now().strftime("%d %B %Y, %I:%M %p")
-    file_timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    # Set time zone to Indian Standard Time (IST)
+    ist = zoneinfo.ZoneInfo("Asia/Kolkata")
+    timestamp = datetime.datetime.now(ist).strftime("%d %B %Y, %I:%M %p")
+    file_timestamp = datetime.datetime.now(ist).strftime("%Y%m%d_%H%M%S")
 
-    # Save into Database
+    # 1. Save into SQL Database
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("""
@@ -76,10 +78,10 @@ def save_memory(name, emoji, message):
     conn.commit()
     conn.close()
 
-    # Save as formatted text file (Ready for Google Drive sync)
+    # 2. Save text file locally
     safe_name = "".join(c for c in name if c.isalnum() or c in (' ', '_', '-')).strip()
     filename = f"Memory_{safe_name}_{file_timestamp}.txt"
-    filepath = os.path.join(DRIVE_SYNC_DIR, filename)
+    filepath = os.path.join(LOCAL_BACKUP_DIR, filename)
 
     content = f"""========================================
 COLLEGE FAREWELL MEMORY
