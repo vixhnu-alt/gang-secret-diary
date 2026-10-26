@@ -96,9 +96,9 @@ def delete_memory(msg_id):
 # ------------------------------------------------------------------------------
 # WEBSITE HEADER
 # ------------------------------------------------------------------------------
-st.title("🎓 Namma Gang Secret Diary ✨")
-st.markdown("### *College mudinjuchu guys... manasula irukkuradha kottitu podhinga!* 💖")
-st.write("Arrears, canteen gossips, mass bunk-u, gang alapparaiga... ezhudhinga peeps!")
+st.title("📖 Vishnu's Farewell Slam Book ✨")
+st.markdown("### *College mudinjaachu... enna patri un manasula irukkuradha kottitu podhu!* 💖")
+st.write("enna pathi unakku pidichadhu/pidikkadhadhu, best memories... all unfiltered!")
 
 st.divider()
 
@@ -128,13 +128,13 @@ with st.form("memory_form", clear_on_submit=True):
     message = st.text_area(
         "Namma Senthu Panna Alapparaiga / Secrets 💬",
         height=250,
-        placeholder="Unakku enna thonudho adha ezhudhu... No limit, fulla thallu! ❤️🥳✨"
+        placeholder="Enna Pathi Unakku Thonuradhu / Namma Memory 💬"
     )
     
     words = len(message.split()) if message.strip() else 0
     st.caption(f"Evlo periya essay-um ezhudhalam: **{words:,} words** *(Unlimited)*")
     
-    submit_button = st.form_submit_button(" Post My Memory 🚀", use_container_width=True)
+    submit_button = st.form_submit_button(" Submit to My Slam Book 🚀", use_container_width=True)
 
 if submit_button:
     if not friend_name.strip():
