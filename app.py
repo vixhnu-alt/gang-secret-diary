@@ -27,20 +27,24 @@ st.markdown("""
         font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
     }
 
-    /* 🎨 INPUT BOXES BACKGROUND COLOR FIX (White Background + Dark Text) */
+    /* 🎨 INPUT BOXES BACKGROUND COLOR & BLACK TEXT FIX */
     .stTextInput input, 
     .stTextArea textarea, 
     .stSelectbox div[data-baseweb="select"] {
         background-color: #FFFFFF !important;
-        color: #2D3748 !important;
+        color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+        font-weight: 500 !important;
         border-radius: 12px !important;
         border: 1px solid #CBD5E0 !important;
     }
 
-    /* Dropdown Selected Text & Options */
-    .stSelectbox div[role="button"] {
+    /* Dropdown Selected Text & Options in Pure Black */
+    .stSelectbox div[role="button"], 
+    div[data-baseweb="select"] * {
         background-color: #FFFFFF !important;
-        color: #2D3748 !important;
+        color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
     }
 
     /* File Uploader Container Fix */
@@ -51,7 +55,7 @@ st.markdown("""
     }
     
     div[data-testid="stFileUploader"] section * {
-        color: #2D3748 !important;
+        color: #000000 !important;
     }
 
     /* Form Container Box */
@@ -291,4 +295,3 @@ if admin_password == ADMIN_PASSWORD:
 
 elif admin_password:
     st.sidebar.error("❌ Incorrect Password!")
-    
