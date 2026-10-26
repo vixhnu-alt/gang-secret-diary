@@ -9,80 +9,27 @@ import base64
 # PAGE CONFIGURATION & STYLING
 # ------------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Vishnu's Slam book 🎓",
+    page_title="College Farewell Memories 🎓",
     page_icon="🎓",
     layout="centered"
 )
 
 st.markdown("""
     <style>
-    /* Gradient Background */
     .stApp {
         background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 50%, #A1C4FD 100%);
     }
-    
-    /* General Typography Fix */
-    h1, h2, h3, h4, label, p, span, div {
+    h1, h2, h3 {
         color: #2D3748 !important;
         font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
     }
-
-    /* 🎨 INPUT BOXES BACKGROUND COLOR FIX (White Background + Dark Text) */
-    .stTextInput input, 
-    .stTextArea textarea, 
-    .stSelectbox div[data-baseweb="select"] {
-        background-color: #FFFFFF !important;
-        color: #2D3748 !important;
-        border-radius: 12px !important;
-        border: 1px solid #CBD5E0 !important;
-    }
-
-    /* Dropdown Selected Text & Options */
-    .stSelectbox div[role="button"] {
-        background-color: #FFFFFF !important;
-        color: #2D3748 !important;
-    }
-
-    /* File Uploader Container Fix */
-    div[data-testid="stFileUploader"] section {
-        background-color: #FFFFFF !important;
-        border: 2px dashed #FF6B6B !important;
-        border-radius: 15px !important;
-    }
-    
-    div[data-testid="stFileUploader"] section * {
-        color: #2D3748 !important;
-    }
-
-    /* Form Container Box */
-    div[data-testid="stForm"] {
-        background-color: rgba(255, 255, 255, 0.45) !important;
-        padding: 25px !important;
-        border-radius: 20px !important;
-        border: 1px solid rgba(255, 255, 255, 0.6) !important;
-    }
-
-    /* Memory Display Card */
     .memory-card {
-        background-color: #FFFFFF !important;
+        background-color: white;
         padding: 20px;
         border-radius: 20px;
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         border-left: 6px solid #FF6B6B;
-    }
-    .memory-card p, .memory-card h3, .memory-card span {
-        color: #2D3748 !important;
-    }
-    
-    /* Delete Confirmation Sub-Box */
-    .delete-container {
-        background-color: rgba(255, 255, 255, 0.85);
-        padding: 15px;
-        border-radius: 12px;
-        border: 1px solid #E2E8F0;
-        margin-top: 10px;
-        margin-bottom: 25px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -90,8 +37,8 @@ st.markdown("""
 DB_PATH = "college_memories.db"
 LOCAL_BACKUP_DIR = "drive_backup_memories"
 
-# 🔑 YOUR SECRET ADMIN PASSWORD
-ADMIN_PASSWORD = "Arovis@191025"
+# 🔑 SET YOUR SECRET ADMIN PASSWORD HERE
+ADMIN_PASSWORD = "namma-admin-123"
 
 # ------------------------------------------------------------------------------
 # DATABASE SETUP WITH AUTO-MIGRATION FIX
@@ -161,9 +108,9 @@ def delete_memory(msg_id):
 # ------------------------------------------------------------------------------
 # WEBSITE HEADER
 # ------------------------------------------------------------------------------
-st.title("🎓 Vishnu's Slam Book ✨")
+st.title("🎓 Namma Gang Secret Diary ✨")
 st.markdown("### *College mudinjuchu guys... manasula irukkuradha kottitu podhinga!* 💖")
-st.write("Enna Pathi Enna nenachingalo Adha pathi Solunga")
+st.write("Arrears, canteen gossips, mass bunk-u, photos & memories... ezhudhinga peeps!")
 
 st.divider()
 
@@ -179,7 +126,7 @@ with st.form("memory_form", clear_on_submit=True):
         "Namma Gang Vibe Enna? 😎",
         [
             "❤️ Bestie / Paasam", 
-            "🎓 Degree Vangitom", 
+            "🎓 Degree Waala", 
             "🔥 Mass-u Vibe", 
             "😂 Sirichu Sethoda (Fun)", 
             "🥳 Party & Gang Vibe", 
@@ -197,12 +144,12 @@ with st.form("memory_form", clear_on_submit=True):
     )
     
     # 📸 Photo Upload Option
-    uploaded_photo = st.file_uploader("📸 Namma photo edhavathu iruntha podunga (Optional)", type=["jpg", "jpeg", "png"])
+    uploaded_photo = st.file_uploader("📸 Add a Photo / Memory (Optional)", type=["jpg", "jpeg", "png"])
     
     words = len(message.split()) if message.strip() else 0
     st.caption(f"Evlo periya essay-um ezhudhalam: **{words:,} words** *(Unlimited)*")
     
-    submit_button = st.form_submit_button(" Add to Vishnu's Slam book 🚀", use_container_width=True)
+    submit_button = st.form_submit_button(" Post My Memory 🚀", use_container_width=True)
 
 if submit_button:
     if not friend_name.strip():
@@ -246,7 +193,6 @@ if admin_password == ADMIN_PASSWORD:
 
     if rows:
         for msg_id, name, emoji, msg, photo_b64, time in rows:
-            # Memory Card Box
             st.markdown(
                 f'<div class="memory-card">'
                 f'<h3 style="margin: 0; padding-bottom: 5px;">{emoji} <b>{name}</b></h3>'
@@ -256,34 +202,23 @@ if admin_password == ADMIN_PASSWORD:
                 unsafe_allow_html=True
             )
             
-            # Display uploaded photo & Save to Gallery button
+            # Display uploaded photo if available
             if photo_b64:
                 try:
                     img_bytes = base64.b64decode(photo_b64)
                     st.image(img_bytes, caption=f"Photo by {name}", use_column_width=True)
-                    
-                    st.download_button(
-                        label=f"📥 Save Photo to Gallery ({name})",
-                        data=img_bytes,
-                        file_name=f"Farewell_Photo_{name}_{msg_id}.png",
-                        mime="image/png",
-                        key=f"dl_{msg_id}"
-                    )
                 except Exception:
                     pass
 
-            # 🛑 DELETE CONFIRMATION CHECKBOX & BUTTON (IN SUB-BOX)
-            with st.container():
-                st.markdown('<div class="delete-container">', unsafe_allow_html=True)
-                confirm_delete = st.checkbox(f"⚠️ Confirm deletion for Post #{msg_id}", key=f"confirm_{msg_id}")
-                if st.button(f"🗑️ Delete Post #{msg_id}", key=f"del_{msg_id}"):
-                    if confirm_delete:
-                        delete_memory(msg_id)
-                        st.success(f"Post #{msg_id} deleted successfully!")
-                        st.rerun()
-                    else:
-                        st.warning("Please check the confirmation box above before deleting!")
-                st.markdown('</div>', unsafe_allow_html=True)
+            # 🛑 DELETE CONFIRMATION CHECKBOX & BUTTON
+            confirm_delete = st.checkbox(f"⚠️ Confirm deletion for Post #{msg_id}", key=f"confirm_{msg_id}")
+            if st.button(f"🗑️ Delete Post #{msg_id}", key=f"del_{msg_id}"):
+                if confirm_delete:
+                    delete_memory(msg_id)
+                    st.success(f"Post #{msg_id} deleted successfully!")
+                    st.rerun()
+                else:
+                    st.warning("Please check the confirmation box above before deleting!")
 
             st.divider()
     else:
