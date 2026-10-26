@@ -97,7 +97,7 @@ def delete_memory(msg_id):
 # WEBSITE HEADER
 # ------------------------------------------------------------------------------
 st.title("📖 Vishnu's Farewell Slam Book ✨")
-st.markdown("### *College mudinjaachu... enna patri un manasula irukkuradha kottitu podhu!* 💖")
+st.markdown("### *College mudinjaachu... enna patri un manasula irukkuradha podhunga!* 💖")
 st.write("enna pathi unakku pidichadhu/pidikkadhadhu, best memories... all unfiltered!")
 
 st.divider()
