@@ -16,13 +16,53 @@ st.set_page_config(
 
 st.markdown("""
     <style>
+    /* Gradient Background */
     .stApp {
         background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 50%, #A1C4FD 100%);
     }
+    
+    /* General Typography Fix */
     h1, h2, h3, h4, label, p, span, div {
         color: #2D3748 !important;
         font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
     }
+
+    /* 🎨 INPUT BOXES BACKGROUND COLOR FIX (White Background + Dark Text) */
+    .stTextInput input, 
+    .stTextArea textarea, 
+    .stSelectbox div[data-baseweb="select"] {
+        background-color: #FFFFFF !important;
+        color: #2D3748 !important;
+        border-radius: 12px !important;
+        border: 1px solid #CBD5E0 !important;
+    }
+
+    /* Dropdown Selected Text & Options */
+    .stSelectbox div[role="button"] {
+        background-color: #FFFFFF !important;
+        color: #2D3748 !important;
+    }
+
+    /* File Uploader Container Fix */
+    div[data-testid="stFileUploader"] section {
+        background-color: #FFFFFF !important;
+        border: 2px dashed #FF6B6B !important;
+        border-radius: 15px !important;
+    }
+    
+    div[data-testid="stFileUploader"] section * {
+        color: #2D3748 !important;
+    }
+
+    /* Form Container Box */
+    div[data-testid="stForm"] {
+        background-color: rgba(255, 255, 255, 0.45) !important;
+        padding: 25px !important;
+        border-radius: 20px !important;
+        border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    }
+
+    /* Memory Display Card */
     .memory-card {
         background-color: #FFFFFF !important;
         padding: 20px;
@@ -34,8 +74,10 @@ st.markdown("""
     .memory-card p, .memory-card h3, .memory-card span {
         color: #2D3748 !important;
     }
+    
+    /* Delete Confirmation Sub-Box */
     .delete-container {
-        background-color: rgba(255, 255, 255, 0.75);
+        background-color: rgba(255, 255, 255, 0.85);
         padding: 15px;
         border-radius: 12px;
         border: 1px solid #E2E8F0;
@@ -131,12 +173,12 @@ st.divider()
 with st.form("memory_form", clear_on_submit=True):
     st.markdown("### 📝 Oru Kutty (or Periya) Message-a Thattu")
     
-    friend_name = st.text_input("Yaaru adhu? (Name / Nickname) ✨", placeholder="Type un peru here Bestie...")
+    friend_name = st.text_input("Yaaru adhu? (Name / Nickname) ✨", placeholder="Type un peru here...")
     
     selected_emoji = st.selectbox(
         "Namma Gang Vibe Enna? 😎",
         [
-            "❤️ Bestie / Paasam", 
+            "❤️ Close Friend / Paasam", 
             "🎓 Degree Vangitom", 
             "🔥 Mass-u Vibe", 
             "😂 Sirichu Sethoda (Fun)", 
@@ -160,7 +202,7 @@ with st.form("memory_form", clear_on_submit=True):
     words = len(message.split()) if message.strip() else 0
     st.caption(f"Evlo periya essay-um ezhudhalam: **{words:,} words** *(Unlimited)*")
     
-    submit_button = st.form_submit_button(" Add to Vishnu's Slam book🚀", use_container_width=True)
+    submit_button = st.form_submit_button(" Add to Vishnu's Slam book 🚀", use_container_width=True)
 
 if submit_button:
     if not friend_name.strip():
