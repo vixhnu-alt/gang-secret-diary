@@ -108,7 +108,7 @@ st.divider()
 with st.form("memory_form", clear_on_submit=True):
     st.markdown("### 📝 Oru Kutty (or Periya) Message-a Thattu")
     
-    friend_name = st.text_input("Yaaru adhu? (Name / Nickname) ✨", placeholder="Type un peru here Bestie...")
+    friend_name = st.text_input("Yaaru adhu? (Name / Nickname) ✨", placeholder="Un peru enna")
     
     selected_emoji = st.selectbox(
         "Namma Gang Vibe Enna? 😎",
@@ -132,7 +132,7 @@ with st.form("memory_form", clear_on_submit=True):
     )
     
     words = len(message.split()) if message.strip() else 0
-    st.caption(f"Evlo periya essay-um ezhudhalam: **{words:,} words** *(Unlimited)*")
+    st.caption(f"Evlo periya essayaa iruthalum parava illa: **{words:,} words** *(Unlimited)*")
     
     submit_button = st.form_submit_button(" Submit to My Slam Book 🚀", use_container_width=True)
 
