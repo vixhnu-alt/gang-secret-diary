@@ -22,40 +22,62 @@ st.markdown("""
     }
     
     /* General Typography Fix */
-    h1, h2, h3, h4, label, p, span, div {
+    h1, h2, h3, h4, label, p, span, div, input, textarea {
         color: #2D3748 !important;
-        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
     }
 
-    /* 🎨 INPUT BOXES BACKGROUND COLOR & BLACK TEXT FIX */
+    /* 🎨 PERU BOX & TEXTAREA FONT + COLOR FIX */
     .stTextInput input, 
-    .stTextArea textarea, 
-    .stSelectbox div[data-baseweb="select"] {
+    .stTextArea textarea {
         background-color: #FFFFFF !important;
         color: #000000 !important;
         -webkit-text-fill-color: #000000 !important;
-        font-weight: 500 !important;
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
+        font-size: 16px !important;
         border-radius: 12px !important;
         border: 1px solid #CBD5E0 !important;
     }
 
-    /* Dropdown Selected Text & Options in Pure Black */
-    .stSelectbox div[role="button"], 
+    /* Placeholders Font Matching */
+    ::placeholder, .stTextInput input::placeholder, .stTextArea textarea::placeholder {
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
+        color: #718096 !important;
+        -webkit-text-fill-color: #718096 !important;
+        opacity: 1 !important;
+    }
+
+    /* 🎨 VIBE DROPDOWN BOX (WHITE BACKGROUND FIX) */
+    div[data-baseweb="select"] {
+        background-color: #FFFFFF !important;
+        border-radius: 12px !important;
+        border: 1px solid #CBD5E0 !important;
+    }
+
     div[data-baseweb="select"] * {
         background-color: #FFFFFF !important;
         color: #000000 !important;
         -webkit-text-fill-color: #000000 !important;
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
     }
 
-    /* File Uploader Container Fix */
+    /* 🎨 UPLOAD BOX & BUTTON (WHITE BACKGROUND FIX) */
     div[data-testid="stFileUploader"] section {
         background-color: #FFFFFF !important;
         border: 2px dashed #FF6B6B !important;
         border-radius: 15px !important;
+        padding: 15px !important;
     }
-    
+
+    div[data-testid="stFileUploader"] section button {
+        background-color: #F7FAFC !important;
+        border: 1px solid #CBD5E0 !important;
+        border-radius: 10px !important;
+    }
+
     div[data-testid="stFileUploader"] section * {
-        color: #000000 !important;
+        color: #2D3748 !important;
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
     }
 
     /* Form Container Box */
@@ -295,3 +317,4 @@ if admin_password == ADMIN_PASSWORD:
 
 elif admin_password:
     st.sidebar.error("❌ Incorrect Password!")
+    
