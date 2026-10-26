@@ -6,197 +6,80 @@ import os
 import base64
 
 # ------------------------------------------------------------------------------
-# PAGE CONFIGURATION & PREMIUM STYLING
+# PAGE CONFIGURATION & STYLING
 # ------------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Vishnu's Slam Book 🎓",
+    page_title="Vishnu's Slam book 🎓",
     page_icon="🎓",
     layout="centered"
 )
 
 st.markdown("""
     <style>
-    /* 1. Global Gradient Background */
+    /* Gradient Background */
     .stApp {
-        background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 50%, #A1C4FD 100%) !important;
+        background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 50%, #A1C4FD 100%);
     }
-
-    /* 2. Global Typography */
-    html, body, [class*="css"], h1, h2, h3, h4, label, p, span, div, input, textarea, button {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-        color: #1A202C !important;
-    }
-
-    /* 3. Top Left Sidebar Expand Arrow Button (<<) Styling Fix */
-    button[data-testid="stHeaderIconButton"], 
-    button[data-testid="baseButton-header"] {
-        color: #1A202C !important;
-        background-color: rgba(255, 255, 255, 0.8) !important;
-        border-radius: 50% !important;
-        padding: 4px !important;
-    }
-
-    /* 4. Form Container - Modern Glassmorphism Card */
-    div[data-testid="stForm"] {
-        background: rgba(255, 255, 255, 0.8) !important;
-        backdrop-filter: blur(16px) !important;
-        -webkit-backdrop-filter: blur(16px) !important;
-        padding: 30px !important;
-        border-radius: 24px !important;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;
-        border: 1px solid rgba(255, 255, 255, 0.9) !important;
-    }
-
-    /* Form Section Titles & Labels */
-    div[data-testid="stForm"] label p {
-        font-size: 15px !important;
-        font-weight: 700 !important;
+    
+    /* General Typography Fix */
+    h1, h2, h3, h4, label, p, span, div {
         color: #2D3748 !important;
-        margin-bottom: 6px !important;
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
     }
 
-    /* 5. Input Fields (Text Input & Text Area) */
-    .stTextInput input, .stTextArea textarea {
+    /* 🎨 INPUT BOXES BACKGROUND COLOR FIX (White Background + Dark Text) */
+    .stTextInput input, 
+    .stTextArea textarea, 
+    .stSelectbox div[data-baseweb="select"] {
         background-color: #FFFFFF !important;
-        color: #1A202C !important;
-        -webkit-text-fill-color: #1A202C !important;
-        font-size: 15px !important;
-        font-weight: 500 !important;
-        border-radius: 14px !important;
-        border: 1.5px solid #E2E8F0 !important;
-        padding: 12px 16px !important;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.02) !important;
+        color: #2D3748 !important;
+        border-radius: 12px !important;
+        border: 1px solid #CBD5E0 !important;
     }
 
-    .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #FF6B6B !important;
-        box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2) !important;
-    }
-
-    /* Input Placeholders */
-    ::placeholder, .stTextInput input::placeholder, .stTextArea textarea::placeholder {
-        color: #A0AEC0 !important;
-        -webkit-text-fill-color: #A0AEC0 !important;
-        font-weight: 400 !important;
-    }
-
-    /* 6. Pure White Vibe Dropdown & Scrollbar Styling */
-    div[data-baseweb="select"] {
+    /* Dropdown Selected Text & Options */
+    .stSelectbox div[role="button"] {
         background-color: #FFFFFF !important;
-        border-radius: 14px !important;
-        border: 1.5px solid #E2E8F0 !important;
+        color: #2D3748 !important;
     }
 
-    div[data-baseweb="select"] * {
-        background-color: #FFFFFF !important;
-        color: #1A202C !important;
-        -webkit-text-fill-color: #1A202C !important;
-        font-weight: 600 !important;
-        font-size: 15px !important;
-    }
-
-    /* Dropdown Open Menu Popup Styling */
-    div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
-        background-color: #FFFFFF !important;
-        border-radius: 14px !important;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
-    }
-
-    ul[data-baseweb="menu"] li, ul[data-baseweb="menu"] li * {
-        background-color: #FFFFFF !important;
-        color: #1A202C !important;
-        -webkit-text-fill-color: #1A202C !important;
-        font-weight: 500 !important;
-    }
-
-    ul[data-baseweb="menu"] li:hover {
-        background-color: #FFF5F5 !important;
-    }
-
-    /* 7. File Uploader Fix */
+    /* File Uploader Container Fix */
     div[data-testid="stFileUploader"] section {
         background-color: #FFFFFF !important;
-        border: 2px dashed #CBD5E0 !important;
-        border-radius: 16px !important;
-        padding: 20px !important;
-        text-align: center !important;
+        border: 2px dashed #FF6B6B !important;
+        border-radius: 15px !important;
     }
-
-    div[data-testid="stFileUploader"] section:hover {
-        border-color: #FF6B6B !important;
-    }
-
-    div[data-testid="stFileUploader"] section button {
-        background-color: #EDF2F7 !important;
-        color: #2D3748 !important;
-        border: none !important;
-        border-radius: 10px !important;
-        font-weight: 600 !important;
-        padding: 8px 16px !important;
-        margin-bottom: 8px !important;
-    }
-
+    
     div[data-testid="stFileUploader"] section * {
-        color: #4A5568 !important;
-        font-size: 13px !important;
+        color: #2D3748 !important;
     }
 
-    /* 8. Submit Button Premium Styling */
-    div[data-testid="stForm"] button[kind="secondaryFormSubmit"] {
-        background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%) !important;
-        color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
-        font-weight: 700 !important;
-        font-size: 16px !important;
-        border-radius: 14px !important;
-        border: none !important;
-        padding: 14px 24px !important;
-        box-shadow: 0 8px 20px rgba(255, 107, 107, 0.35) !important;
-        transition: all 0.2s ease-in-out !important;
-        margin-top: 10px !important;
+    /* Form Container Box */
+    div[data-testid="stForm"] {
+        background-color: rgba(255, 255, 255, 0.45) !important;
+        padding: 25px !important;
+        border-radius: 20px !important;
+        border: 1px solid rgba(255, 255, 255, 0.6) !important;
     }
 
-    div[data-testid="stForm"] button[kind="secondaryFormSubmit"]:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 12px 24px rgba(255, 107, 107, 0.45) !important;
-    }
-
-    /* 9. SIDEBAR ADMIN PANEL FIX (White Background + Black Text) */
-    section[data-testid="stSidebar"] {
-        background-color: #FFFFFF !important;
-        border-right: 1px solid #E2E8F0 !important;
-    }
-
-    section[data-testid="stSidebar"] * {
-        color: #1A202C !important;
-        -webkit-text-fill-color: #1A202C !important;
-    }
-
-    section[data-testid="stSidebar"] .stTextInput input {
-        background-color: #F7FAFC !important;
-        border: 1px solid #CBD5E0 !important;
-        border-radius: 10px !important;
-        color: #1A202C !important;
-    }
-
-    /* 10. Admin Memory Cards */
+    /* Memory Display Card */
     .memory-card {
         background-color: #FFFFFF !important;
-        padding: 24px;
+        padding: 20px;
         border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-        margin-bottom: 20px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
         border-left: 6px solid #FF6B6B;
     }
-
     .memory-card p, .memory-card h3, .memory-card span {
         color: #2D3748 !important;
     }
-
+    
+    /* Delete Confirmation Sub-Box */
     .delete-container {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 16px;
-        border-radius: 14px;
+        background-color: rgba(255, 255, 255, 0.85);
+        padding: 15px;
+        border-radius: 12px;
         border: 1px solid #E2E8F0;
         margin-top: 10px;
         margin-bottom: 25px;
@@ -207,15 +90,17 @@ st.markdown("""
 DB_PATH = "college_memories.db"
 LOCAL_BACKUP_DIR = "drive_backup_memories"
 
-# 🔑 SECRET ADMIN PASSWORD
+# 🔑 YOUR SECRET ADMIN PASSWORD
 ADMIN_PASSWORD = "Arovis@191025"
 
 # ------------------------------------------------------------------------------
-# DATABASE SETUP
+# DATABASE SETUP WITH AUTO-MIGRATION FIX
 # ------------------------------------------------------------------------------
 def init_storage():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
+    
+    # Create table if not present
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS memories (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -228,6 +113,7 @@ def init_storage():
     """)
     conn.commit()
 
+    # Automatically add 'photo_data' column if missing from existing database
     cursor.execute("PRAGMA table_info(memories)")
     columns = [column[1] for column in cursor.fetchall()]
     if "photo_data" not in columns:
@@ -246,6 +132,7 @@ def save_memory(name, emoji, message, photo_b64):
     timestamp = datetime.datetime.now(ist).strftime("%d %B %Y, %I:%M %p")
     file_timestamp = datetime.datetime.now(ist).strftime("%Y%m%d_%H%M%S")
 
+    # Save to SQLite DB
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("""
@@ -255,6 +142,7 @@ def save_memory(name, emoji, message, photo_b64):
     conn.commit()
     conn.close()
 
+    # Save local backup text file
     safe_name = "".join(c for c in name if c.isalnum() or c in (' ', '_', '-')).strip()
     filename = f"Memory_{safe_name}_{file_timestamp}.txt"
     filepath = os.path.join(LOCAL_BACKUP_DIR, filename)
@@ -273,22 +161,22 @@ def delete_memory(msg_id):
 # ------------------------------------------------------------------------------
 # WEBSITE HEADER
 # ------------------------------------------------------------------------------
-st.title("🎓 Vishnu's Farewell Slam Book ✨")
-st.markdown("##### *College mudinjuchu guys... manasula irukkuradha kottitu podhinga!* 💖")
-st.write("Enna pathi unakku thonuradhu, namma memories, secrets... all unfiltered!")
+st.title("🎓 Vishnu's Slam Book ✨")
+st.markdown("### *College mudinjuchu guys... manasula irukkuradha kottitu podhinga!* 💖")
+st.write("Enna Pathi Enna nenachingalo Adha pathi Solunga")
 
 st.divider()
 
 # ------------------------------------------------------------------------------
-# FORM TO WRITE A SLAM ENTRY
+# FORM TO WRITE A MESSAGE & UPLOAD PHOTO (VISIBLE TO EVERYONE)
 # ------------------------------------------------------------------------------
 with st.form("memory_form", clear_on_submit=True):
-    st.markdown("### 📝 Fill My Slam Book!")
+    st.markdown("### 📝 Oru Kutty (or Periya) Message-a Thattu")
     
     friend_name = st.text_input("Yaaru adhu? (Name / Nickname) ✨", placeholder="Type un peru here...")
     
     selected_emoji = st.selectbox(
-        "Namma Vibe / Bond Enna? 😎",
+        "Namma Gang Vibe Enna? 😎",
         [
             "❤️ Close Friend / Paasam", 
             "🎓 Degree Vangitom", 
@@ -303,17 +191,18 @@ with st.form("memory_form", clear_on_submit=True):
     )
     
     message = st.text_area(
-        "Enna Pathi Unakku Thonuradhu / Namma Memory 💬",
-        height=180,
+        "Namma Senthu Panna Alapparaiga / Secrets 💬",
+        height=200,
         placeholder="Unakku enna thonudho adha ezhudhu... No limit, fulla thallu! ❤️🥳✨"
     )
     
+    # 📸 Photo Upload Option
     uploaded_photo = st.file_uploader("📸 Namma photo edhavathu iruntha podunga (Optional)", type=["jpg", "jpeg", "png"])
     
     words = len(message.split()) if message.strip() else 0
     st.caption(f"Evlo periya essay-um ezhudhalam: **{words:,} words** *(Unlimited)*")
     
-    submit_button = st.form_submit_button("Add to Vishnu's Slam Book 🚀", use_container_width=True)
+    submit_button = st.form_submit_button(" Add to Vishnu's Slam book 🚀", use_container_width=True)
 
 if submit_button:
     if not friend_name.strip():
@@ -357,6 +246,7 @@ if admin_password == ADMIN_PASSWORD:
 
     if rows:
         for msg_id, name, emoji, msg, photo_b64, time in rows:
+            # Memory Card Box
             st.markdown(
                 f'<div class="memory-card">'
                 f'<h3 style="margin: 0; padding-bottom: 5px;">{emoji} <b>{name}</b></h3>'
@@ -366,6 +256,7 @@ if admin_password == ADMIN_PASSWORD:
                 unsafe_allow_html=True
             )
             
+            # Display uploaded photo & Save to Gallery button
             if photo_b64:
                 try:
                     img_bytes = base64.b64decode(photo_b64)
@@ -381,6 +272,7 @@ if admin_password == ADMIN_PASSWORD:
                 except Exception:
                     pass
 
+            # 🛑 DELETE CONFIRMATION CHECKBOX & BUTTON (IN SUB-BOX)
             with st.container():
                 st.markdown('<div class="delete-container">', unsafe_allow_html=True)
                 confirm_delete = st.checkbox(f"⚠️ Confirm deletion for Post #{msg_id}", key=f"confirm_{msg_id}")
@@ -399,4 +291,3 @@ if admin_password == ADMIN_PASSWORD:
 
 elif admin_password:
     st.sidebar.error("❌ Incorrect Password!")
-    
