@@ -21,13 +21,22 @@ st.markdown("""
         background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 50%, #A1C4FD 100%) !important;
     }
 
-    /* 2. Global Uniform Typography for Premium Clean Look */
+    /* 2. Global Typography */
     html, body, [class*="css"], h1, h2, h3, h4, label, p, span, div, input, textarea, button {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
         color: #1A202C !important;
     }
 
-    /* 3. Form Container - Modern Glassmorphism Card */
+    /* 3. Top Left Sidebar Expand Arrow Button (<<) Styling Fix */
+    button[data-testid="stHeaderIconButton"], 
+    button[data-testid="baseButton-header"] {
+        color: #1A202C !important;
+        background-color: rgba(255, 255, 255, 0.8) !important;
+        border-radius: 50% !important;
+        padding: 4px !important;
+    }
+
+    /* 4. Form Container - Modern Glassmorphism Card */
     div[data-testid="stForm"] {
         background: rgba(255, 255, 255, 0.8) !important;
         backdrop-filter: blur(16px) !important;
@@ -46,7 +55,7 @@ st.markdown("""
         margin-bottom: 6px !important;
     }
 
-    /* 4. Input Fields (Text Input & Text Area) */
+    /* 5. Input Fields (Text Input & Text Area) */
     .stTextInput input, .stTextArea textarea {
         background-color: #FFFFFF !important;
         color: #1A202C !important;
@@ -71,7 +80,7 @@ st.markdown("""
         font-weight: 400 !important;
     }
 
-    /* 5. Dropdown Selection Fix (Solves Dark Box & Unreadable Items Glitch) */
+    /* 6. Pure White Vibe Dropdown & Scrollbar Styling */
     div[data-baseweb="select"] {
         background-color: #FFFFFF !important;
         border-radius: 14px !important;
@@ -86,8 +95,14 @@ st.markdown("""
         font-size: 15px !important;
     }
 
-    /* Dropdown Open Popup List Styling */
-    ul[data-baseweb="menu"], ul[data-baseweb="menu"] * {
+    /* Dropdown Open Menu Popup Styling */
+    div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
+        background-color: #FFFFFF !important;
+        border-radius: 14px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+    }
+
+    ul[data-baseweb="menu"] li, ul[data-baseweb="menu"] li * {
         background-color: #FFFFFF !important;
         color: #1A202C !important;
         -webkit-text-fill-color: #1A202C !important;
@@ -98,7 +113,7 @@ st.markdown("""
         background-color: #FFF5F5 !important;
     }
 
-    /* 6. File Uploader Fix (Fixes 'uploadUpload' Icon Text Overlap Glitch) */
+    /* 7. File Uploader Fix */
     div[data-testid="stFileUploader"] section {
         background-color: #FFFFFF !important;
         border: 2px dashed #CBD5E0 !important;
@@ -126,7 +141,7 @@ st.markdown("""
         font-size: 13px !important;
     }
 
-    /* 7. Submit Button Styling */
+    /* 8. Submit Button Premium Styling */
     div[data-testid="stForm"] button[kind="secondaryFormSubmit"] {
         background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%) !important;
         color: #FFFFFF !important;
@@ -146,7 +161,25 @@ st.markdown("""
         box-shadow: 0 12px 24px rgba(255, 107, 107, 0.45) !important;
     }
 
-    /* 8. Admin Cards */
+    /* 9. SIDEBAR ADMIN PANEL FIX (White Background + Black Text) */
+    section[data-testid="stSidebar"] {
+        background-color: #FFFFFF !important;
+        border-right: 1px solid #E2E8F0 !important;
+    }
+
+    section[data-testid="stSidebar"] * {
+        color: #1A202C !important;
+        -webkit-text-fill-color: #1A202C !important;
+    }
+
+    section[data-testid="stSidebar"] .stTextInput input {
+        background-color: #F7FAFC !important;
+        border: 1px solid #CBD5E0 !important;
+        border-radius: 10px !important;
+        color: #1A202C !important;
+    }
+
+    /* 10. Admin Memory Cards */
     .memory-card {
         background-color: #FFFFFF !important;
         padding: 24px;
