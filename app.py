@@ -1,10 +1,11 @@
 import streamlit as st
 import sqlite3
 import datetime
-import os
 import zoneinfo
+import os
+
 # ------------------------------------------------------------------------------
-# PAGE CONFIGURATION & STYLING (FUN & COLORFUL VIBES)
+# PAGE CONFIGURATION & STYLING
 # ------------------------------------------------------------------------------
 st.set_page_config(
     page_title="College Farewell Memories 🎓",
@@ -12,19 +13,15 @@ st.set_page_config(
     layout="centered"
 )
 
-# Fun background & card styling
 st.markdown("""
     <style>
-    /* Gradient Background */
     .stApp {
         background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 50%, #A1C4FD 100%);
     }
-    /* Friendly headings */
     h1, h2, h3 {
         color: #2D3748 !important;
         font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
     }
-    /* Polaroid Card Effect for Messages */
     .memory-card {
         background-color: white;
         padding: 20px;
@@ -37,10 +34,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 DB_PATH = "college_memories.db"
-DRIVE_SYNC_DIR = "drive_backup_memories"
+LOCAL_BACKUP_DIR = "drive_backup_memories"
+
+# 🔑 SET YOUR SECRET ADMIN PASSWORD HERE
+ADMIN_PASSWORD = "namma-admin-123"
 
 # ------------------------------------------------------------------------------
-# DATABASE & FILE SETUP
+# DATABASE SETUP
 # ------------------------------------------------------------------------------
 def init_storage():
     conn = sqlite3.connect(DB_PATH)
@@ -57,18 +57,17 @@ def init_storage():
     conn.commit()
     conn.close()
 
-    if not os.path.exists(DRIVE_SYNC_DIR):
-        os.makedirs(DRIVE_SYNC_DIR)
+    if not os.path.exists(LOCAL_BACKUP_DIR):
+        os.makedirs(LOCAL_BACKUP_DIR)
 
 init_storage()
 
 def save_memory(name, emoji, message):
-    # Set time zone to Indian Standard Time (IST)
     ist = zoneinfo.ZoneInfo("Asia/Kolkata")
     timestamp = datetime.datetime.now(ist).strftime("%d %B %Y, %I:%M %p")
     file_timestamp = datetime.datetime.now(ist).strftime("%Y%m%d_%H%M%S")
 
-    # 1. Save into SQL Database
+    # Save to SQLite DB
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("""
@@ -78,7 +77,7 @@ def save_memory(name, emoji, message):
     conn.commit()
     conn.close()
 
-    # 2. Save text file locally
+    # Save local backup text file
     safe_name = "".join(c for c in name if c.isalnum() or c in (' ', '_', '-')).strip()
     filename = f"Memory_{safe_name}_{file_timestamp}.txt"
     filepath = os.path.join(LOCAL_BACKUP_DIR, filename)
@@ -97,12 +96,19 @@ MESSAGE:
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(content)
 
+def delete_memory(msg_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM memories WHERE id = ?", (msg_id,))
+    conn.commit()
+    conn.close()
+
 # ------------------------------------------------------------------------------
 # WEBSITE HEADER
 # ------------------------------------------------------------------------------
-st.title("🎓Namma College Secret Diary✨")
-st.markdown("### *College mudinjuchu da... adhunala manasula irukkuradha kottitu ponga* 💖")
-st.write("canteen scene-u, mass bunk-u... future la open panni patha semma sirippa irukum ")
+st.title("🎓 Namma Gang Secret Diary ✨")
+st.markdown("### *College mudinjuchu guys... manasula irukkuradha kottitu podhinga!* 💖")
+st.write("Arrears, canteen gossips, mass bunk-u, gang alapparaiga... future-la open panni patha semma sirippa irukum, ezhudhinga peeps!")
 
 st.divider()
 
@@ -110,58 +116,83 @@ st.divider()
 # FORM TO WRITE A MESSAGE
 # ------------------------------------------------------------------------------
 with st.form("memory_form", clear_on_submit=True):
-    st.markdown("### 📝 Un Manasula Irukkuradha Kottu")
+    st.markdown("### 📝 Oru Kutty (or Periya) Message-a Thattu")
     
-    friend_name = st.text_input("Yaaruda Nee? (Name Type Pannu) ✨", placeholder="Type your name here...")
+    friend_name = st.text_input("Yaaru adhu? (Name / Nickname) ✨", placeholder="Type un peru here Bestie...")
     
     selected_emoji = st.selectbox(
-        "Pick a Vibe / Emoji 😎",
-        ["❤️ Love & Paasam","🎓 Clear Aayittom (Graduation)","🔥 Mass-u Boss-u","😂 Sirichu Sirichu Sethoda","🥳 Party Vibe Machan","🌟 Superstar DA","👑 Department Legend","🚀 Future-la Big Shot","✨ Semma Memories"]
+        "Namma Gang Vibe Enna? 😎",
+        [
+            "❤️ Bestie / Paasam", 
+            "🎓 Degree Waala", 
+            "🔥 Mass-u Vibe", 
+            "😂 Sirichu Sethoda (Fun)", 
+            "🥳 Party & Gang Vibe", 
+            "🌟 Star Friend", 
+            "👑 Gang Legend", 
+            "🚀 Future Big Shot", 
+            "✨ Unforgettable Memories"
+        ]
     )
     
     message = st.text_area(
-        "Your Memory / Message 💬",
+        "Namma Senthu Panna Alapparaiga / Secrets 💬",
         height=250,
-        placeholder="Unakku enna thonudho adha eluthu❤️🥳✨"
+        placeholder="Unakku enna thonudho adha ezhudhu... No limit, fulla thallu! ❤️🥳✨"
     )
     
-    # Live word counter (Unlimited display)
     words = len(message.split()) if message.strip() else 0
-    st.caption(f"Current length: **{words:,} words** *(Unlimited)*")
+    st.caption(f"Evlo periya essay-um ezhudhalam: **{words:,} words** *(Unlimited)*")
     
     submit_button = st.form_submit_button(" Post My Memory 🚀", use_container_width=True)
 
-# Submit action
 if submit_button:
     if not friend_name.strip():
         st.error("Please enter your name first! 😊")
     elif not message.strip():
-        st.error("Please write a small message before posting! 💬")
+        st.error("Please write a message before posting! 💬")
     else:
-        chosen_emoji = selected_emoji.split()[0]  # Extracts just the emoji symbol
+        chosen_emoji = selected_emoji.split()[0]
         save_memory(friend_name.strip(), chosen_emoji, message.strip())
         
-        # Celebration Animation
         st.balloons()
-        st.success("Thank you so much! Your memory has been posted below and saved forever! ❤️")
+        st.success("Thank you so much! Your memory has been posted below! ❤️")
         st.rerun()
 
 st.divider()
 
 # ------------------------------------------------------------------------------
-# LIVE MEMORY WALL (EVERYONE CAN READ)
+# SIDEBAR ADMIN PANEL
+# ------------------------------------------------------------------------------
+with st.sidebar:
+    st.title("🔒 Admin Panel")
+    admin_password = st.text_input("Enter Admin Password:", type="password")
+    
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM memories")
+    total_count = cursor.fetchone()[0]
+    conn.close()
+
+    if admin_password == ADMIN_PASSWORD:
+        st.success("🔓 Access Granted!")
+        st.metric(label="📊 Total Memories Posted", value=total_count)
+    elif admin_password:
+        st.error("❌ Wrong Password!")
+
+# ------------------------------------------------------------------------------
+# LIVE MEMORY WALL
 # ------------------------------------------------------------------------------
 st.markdown("## 💌 Namma Gang-oda Memories & Wishes")
 
 conn = sqlite3.connect(DB_PATH)
 cursor = conn.cursor()
-cursor.execute("SELECT friend_name, emoji, message, submitted_at FROM memories ORDER BY id DESC")
+cursor.execute("SELECT id, friend_name, emoji, message, submitted_at FROM memories ORDER BY id DESC")
 rows = cursor.fetchall()
 conn.close()
 
 if rows:
-    st.write(f"**Total Memories Posted:** `{len(rows)}`")
-    for name, emoji, msg, time in rows:
+    for msg_id, name, emoji, msg, time in rows:
         st.markdown(f"""
             <div class="memory-card">
                 <h3 style="margin: 0; padding-bottom: 5px;">{emoji} <b>{name}</b></h3>
@@ -169,5 +200,12 @@ if rows:
                 <p style="font-size: 16px; color: #2D3748; white-space: pre-wrap; line-height: 1.6;">{msg}</p>
             </div>
         """, unsafe_allow_html=True)
+        
+        # If Admin password is correct, show Delete Button under every post!
+        if admin_password == ADMIN_PASSWORD:
+            if st.button(f"🗑️ Delete Post #{msg_id}", key=f"del_{msg_id}"):
+                delete_memory(msg_id)
+                st.success(f"Post #{msg_id} deleted!")
+                st.rerun()
 else:
     st.info("No memories posted yet! Be the first one to write above! ✨")
