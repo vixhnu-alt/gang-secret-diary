@@ -120,7 +120,7 @@ st.divider()
 with st.form("memory_form", clear_on_submit=True):
     st.markdown("### 📝 Oru Kutty (or Periya) Message-a Thattu")
     
-    friend_name = st.text_input("Yaaru adhu? (Name / Nickname) ✨", placeholder="Type un peru here Bestie...")
+    friend_name = st.text_input("Yaaru adhu? (Name / Nickname) ✨", placeholder="Type un peru here...")
     
     selected_emoji = st.selectbox(
         "Namma Gang Vibe Enna? 😎",
