@@ -37,7 +37,7 @@ DB_PATH = "college_memories.db"
 LOCAL_BACKUP_DIR = "drive_backup_memories"
 
 # 🔑 SET YOUR SECRET ADMIN PASSWORD HERE
-ADMIN_PASSWORD = "namma-admin-123"
+ADMIN_PASSWORD = "Arovis@191025"
 
 # ------------------------------------------------------------------------------
 # DATABASE SETUP
