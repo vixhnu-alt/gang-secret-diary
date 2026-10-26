@@ -9,7 +9,7 @@ import base64
 # PAGE CONFIGURATION & STYLING
 # ------------------------------------------------------------------------------
 st.set_page_config(
-    page_title="College Farewell Memories 🎓",
+    page_title="Vishnu's Slam book 🎓",
     page_icon="🎓",
     layout="centered"
 )
@@ -38,7 +38,7 @@ DB_PATH = "college_memories.db"
 LOCAL_BACKUP_DIR = "drive_backup_memories"
 
 # 🔑 SET YOUR SECRET ADMIN PASSWORD HERE
-ADMIN_PASSWORD = "namma-admin-123"
+ADMIN_PASSWORD = "Arovis@191025"
 
 # ------------------------------------------------------------------------------
 # DATABASE SETUP WITH AUTO-MIGRATION FIX
@@ -108,9 +108,9 @@ def delete_memory(msg_id):
 # ------------------------------------------------------------------------------
 # WEBSITE HEADER
 # ------------------------------------------------------------------------------
-st.title("🎓 Namma Gang Secret Diary ✨")
+st.title("🎓 Vishnu's Slam Book ✨")
 st.markdown("### *College mudinjuchu guys... manasula irukkuradha kottitu podhinga!* 💖")
-st.write("Arrears, canteen gossips, mass bunk-u, photos & memories... ezhudhinga peeps!")
+st.write("Enna Pathi Enna nenachingalo Adha pathi Solunga ")
 
 st.divider()
 
@@ -126,7 +126,7 @@ with st.form("memory_form", clear_on_submit=True):
         "Namma Gang Vibe Enna? 😎",
         [
             "❤️ Bestie / Paasam", 
-            "🎓 Degree Waala", 
+            "🎓 Degree Vangitom", 
             "🔥 Mass-u Vibe", 
             "😂 Sirichu Sethoda (Fun)", 
             "🥳 Party & Gang Vibe", 
@@ -144,12 +144,12 @@ with st.form("memory_form", clear_on_submit=True):
     )
     
     # 📸 Photo Upload Option
-    uploaded_photo = st.file_uploader("📸 Add a Photo / Memory (Optional)", type=["jpg", "jpeg", "png"])
+    uploaded_photo = st.file_uploader("📸 Namma photo edhavathu iruntha podunga (Optional)", type=["jpg", "jpeg", "png"])
     
     words = len(message.split()) if message.strip() else 0
     st.caption(f"Evlo periya essay-um ezhudhalam: **{words:,} words** *(Unlimited)*")
     
-    submit_button = st.form_submit_button(" Post My Memory 🚀", use_container_width=True)
+    submit_button = st.form_submit_button(" Add to Vishnu's Slam book🚀", use_container_width=True)
 
 if submit_button:
     if not friend_name.strip():
