@@ -41,11 +41,13 @@ LOCAL_BACKUP_DIR = "drive_backup_memories"
 ADMIN_PASSWORD = "namma-admin-123"
 
 # ------------------------------------------------------------------------------
-# DATABASE SETUP
+# DATABASE SETUP WITH AUTO-MIGRATION FIX
 # ------------------------------------------------------------------------------
 def init_storage():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
+    
+    # Create table if not present
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS memories (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -57,6 +59,14 @@ def init_storage():
         )
     """)
     conn.commit()
+
+    # Automatically add 'photo_data' column if missing from existing database
+    cursor.execute("PRAGMA table_info(memories)")
+    columns = [column[1] for column in cursor.fetchall()]
+    if "photo_data" not in columns:
+        cursor.execute("ALTER TABLE memories ADD COLUMN photo_data TEXT")
+        conn.commit()
+
     conn.close()
 
     if not os.path.exists(LOCAL_BACKUP_DIR):
@@ -157,7 +167,7 @@ if submit_button:
         save_memory(friend_name.strip(), chosen_emoji, message.strip(), photo_b64)
         
         st.balloons()
-        st.success("Thank you so much! Your secret memory and photo have been saved safely! ❤️")
+        st.success("Thank you so much! Your secret memory has been saved safely! ❤️")
         st.rerun()
 
 st.divider()
