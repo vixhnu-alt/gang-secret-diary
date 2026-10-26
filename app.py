@@ -6,106 +6,156 @@ import os
 import base64
 
 # ------------------------------------------------------------------------------
-# PAGE CONFIGURATION & STYLING
+# PAGE CONFIGURATION & PREMIUM STYLING
 # ------------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Vishnu's Slam book 🎓",
+    page_title="Vishnu's Slam Book 🎓",
     page_icon="🎓",
     layout="centered"
 )
 
 st.markdown("""
     <style>
-    /* Gradient Background */
+    /* Premium Soft Gradient Background */
     .stApp {
-        background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 50%, #A1C4FD 100%);
+        background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 50%, #A1C4FD 100%) !important;
     }
     
-    /* General Typography Fix */
-    h1, h2, h3, h4, label, p, span, div, input, textarea {
+    /* Global Typography - Clean & Modern */
+    html, body, [class*="css"], h1, h2, h3, h4, label, p, span, div {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+        color: #1A202C !important;
+    }
+
+    /* 🎨 PREMIUM CARD FORM CONTAINER */
+    div[data-testid="stForm"] {
+        background: rgba(255, 255, 255, 0.75) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        padding: 30px !important;
+        border-radius: 24px !important;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    }
+
+    /* Form Labels */
+    div[data-testid="stForm"] label p {
+        font-weight: 700 !important;
+        font-size: 15px !important;
         color: #2D3748 !important;
-        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
+        margin-bottom: 6px !important;
     }
 
-    /* 🎨 PERU BOX & TEXTAREA FONT + COLOR FIX */
-    .stTextInput input, 
-    .stTextArea textarea {
+    /* 🎨 INPUT FIELD FIXES (PERU & MESSAGE BOX) */
+    .stTextInput input, .stTextArea textarea {
         background-color: #FFFFFF !important;
-        color: #000000 !important;
-        -webkit-text-fill-color: #000000 !important;
-        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
-        font-size: 16px !important;
+        color: #1A202C !important;
+        -webkit-text-fill-color: #1A202C !important;
+        font-size: 15px !important;
+        font-weight: 500 !important;
         border-radius: 12px !important;
-        border: 1px solid #CBD5E0 !important;
+        border: 1.5px solid #E2E8F0 !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
     }
 
-    /* Placeholders Font Matching */
+    .stTextInput input:focus, .stTextArea textarea:focus {
+        border-color: #FF6B6B !important;
+        box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2) !important;
+    }
+
+    /* Placeholders Styling */
     ::placeholder, .stTextInput input::placeholder, .stTextArea textarea::placeholder {
-        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
-        color: #718096 !important;
-        -webkit-text-fill-color: #718096 !important;
-        opacity: 1 !important;
+        color: #A0AEC0 !important;
+        -webkit-text-fill-color: #A0AEC0 !important;
+        font-weight: 400 !important;
     }
 
-    /* 🎨 VIBE DROPDOWN BOX (WHITE BACKGROUND FIX) */
+    /* 🎨 VIBE DROPDOWN FIX (NO DARK OVERLAY) */
     div[data-baseweb="select"] {
         background-color: #FFFFFF !important;
         border-radius: 12px !important;
-        border: 1px solid #CBD5E0 !important;
+        border: 1.5px solid #E2E8F0 !important;
     }
 
     div[data-baseweb="select"] * {
         background-color: #FFFFFF !important;
-        color: #000000 !important;
-        -webkit-text-fill-color: #000000 !important;
-        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
+        color: #1A202C !important;
+        -webkit-text-fill-color: #1A202C !important;
+        font-weight: 600 !important;
+        font-size: 15px !important;
     }
 
-    /* 🎨 UPLOAD BOX & BUTTON (WHITE BACKGROUND FIX) */
+    ul[data-baseweb="menu"] {
+        background-color: #FFFFFF !important;
+        border-radius: 12px !important;
+    }
+
+    ul[data-baseweb="menu"] li {
+        color: #1A202C !important;
+        background-color: #FFFFFF !important;
+    }
+
+    /* 🎨 UPLOAD BOX FIX (NO DUPLICATE ICONS/TEXT) */
     div[data-testid="stFileUploader"] section {
         background-color: #FFFFFF !important;
-        border: 2px dashed #FF6B6B !important;
-        border-radius: 15px !important;
-        padding: 15px !important;
+        border: 2px dashed #CBD5E0 !important;
+        border-radius: 16px !important;
+        padding: 20px !important;
+    }
+
+    div[data-testid="stFileUploader"] section:hover {
+        border-color: #FF6B6B !important;
     }
 
     div[data-testid="stFileUploader"] section button {
-        background-color: #F7FAFC !important;
-        border: 1px solid #CBD5E0 !important;
+        background-color: #EDF2F7 !important;
+        border: none !important;
         border-radius: 10px !important;
+        font-weight: 600 !important;
+        color: #2D3748 !important;
     }
 
     div[data-testid="stFileUploader"] section * {
-        color: #2D3748 !important;
-        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
+        color: #4A5568 !important;
     }
 
-    /* Form Container Box */
-    div[data-testid="stForm"] {
-        background-color: rgba(255, 255, 255, 0.45) !important;
-        padding: 25px !important;
-        border-radius: 20px !important;
-        border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    /* 🚀 SUBMIT BUTTON PREMIUM LOOK */
+    div[data-testid="stForm"] button[kind="secondaryFormSubmit"] {
+        background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%) !important;
+        color: #FFFFFF !important;
+        font-weight: 700 !important;
+        font-size: 16px !important;
+        border-radius: 14px !important;
+        border: none !important;
+        padding: 12px 24px !important;
+        box-shadow: 0 8px 20px rgba(255, 107, 107, 0.35) !important;
+        transition: all 0.2s ease-in-out !important;
     }
 
-    /* Memory Display Card */
+    div[data-testid="stForm"] button[kind="secondaryFormSubmit"]:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 12px 24px rgba(255, 107, 107, 0.45) !important;
+    }
+
+    /* 📖 ADMIN DISPLAY CARDS */
     .memory-card {
         background-color: #FFFFFF !important;
-        padding: 20px;
+        padding: 24px;
         border-radius: 20px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        margin-bottom: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        margin-bottom: 20px;
         border-left: 6px solid #FF6B6B;
     }
+
     .memory-card p, .memory-card h3, .memory-card span {
         color: #2D3748 !important;
     }
-    
-    /* Delete Confirmation Sub-Box */
+
+    /* Delete Container */
     .delete-container {
-        background-color: rgba(255, 255, 255, 0.85);
-        padding: 15px;
-        border-radius: 12px;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 16px;
+        border-radius: 14px;
         border: 1px solid #E2E8F0;
         margin-top: 10px;
         margin-bottom: 25px;
@@ -116,17 +166,15 @@ st.markdown("""
 DB_PATH = "college_memories.db"
 LOCAL_BACKUP_DIR = "drive_backup_memories"
 
-# 🔑 YOUR SECRET ADMIN PASSWORD
+# 🔑 SECRET ADMIN PASSWORD
 ADMIN_PASSWORD = "Arovis@191025"
 
 # ------------------------------------------------------------------------------
-# DATABASE SETUP WITH AUTO-MIGRATION FIX
+# DATABASE SETUP
 # ------------------------------------------------------------------------------
 def init_storage():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    
-    # Create table if not present
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS memories (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -139,7 +187,6 @@ def init_storage():
     """)
     conn.commit()
 
-    # Automatically add 'photo_data' column if missing from existing database
     cursor.execute("PRAGMA table_info(memories)")
     columns = [column[1] for column in cursor.fetchall()]
     if "photo_data" not in columns:
@@ -158,7 +205,6 @@ def save_memory(name, emoji, message, photo_b64):
     timestamp = datetime.datetime.now(ist).strftime("%d %B %Y, %I:%M %p")
     file_timestamp = datetime.datetime.now(ist).strftime("%Y%m%d_%H%M%S")
 
-    # Save to SQLite DB
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("""
@@ -168,7 +214,6 @@ def save_memory(name, emoji, message, photo_b64):
     conn.commit()
     conn.close()
 
-    # Save local backup text file
     safe_name = "".join(c for c in name if c.isalnum() or c in (' ', '_', '-')).strip()
     filename = f"Memory_{safe_name}_{file_timestamp}.txt"
     filepath = os.path.join(LOCAL_BACKUP_DIR, filename)
@@ -187,22 +232,22 @@ def delete_memory(msg_id):
 # ------------------------------------------------------------------------------
 # WEBSITE HEADER
 # ------------------------------------------------------------------------------
-st.title("🎓 Vishnu's Slam Book ✨")
-st.markdown("### *College mudinjuchu guys... manasula irukkuradha kottitu podhinga!* 💖")
-st.write("Enna Pathi Enna nenachingalo Adha pathi Solunga")
+st.title("🎓 Vishnu's Farewell Slam Book ✨")
+st.markdown("##### *College mudinjuchu guys... manasula irukkuradha kottitu podhinga!* 💖")
+st.write("Enna pathi unakku thonuradhu, namma memories, secrets... all unfiltered!")
 
 st.divider()
 
 # ------------------------------------------------------------------------------
-# FORM TO WRITE A MESSAGE & UPLOAD PHOTO (VISIBLE TO EVERYONE)
+# FORM TO WRITE A SLAM ENTRY
 # ------------------------------------------------------------------------------
 with st.form("memory_form", clear_on_submit=True):
-    st.markdown("### 📝 Oru Kutty (or Periya) Message-a Thattu")
+    st.markdown("### 📝 Fill My Slam Book!")
     
     friend_name = st.text_input("Yaaru adhu? (Name / Nickname) ✨", placeholder="Type un peru here...")
     
     selected_emoji = st.selectbox(
-        "Namma Gang Vibe Enna? 😎",
+        "Namma Vibe / Bond Enna? 😎",
         [
             "❤️ Close Friend / Paasam", 
             "🎓 Degree Vangitom", 
@@ -217,18 +262,17 @@ with st.form("memory_form", clear_on_submit=True):
     )
     
     message = st.text_area(
-        "Namma Senthu Panna Alapparaiga / Secrets 💬",
-        height=200,
+        "Enna Pathi Unakku Thonuradhu / Namma Memory 💬",
+        height=180,
         placeholder="Unakku enna thonudho adha ezhudhu... No limit, fulla thallu! ❤️🥳✨"
     )
     
-    # 📸 Photo Upload Option
     uploaded_photo = st.file_uploader("📸 Namma photo edhavathu iruntha podunga (Optional)", type=["jpg", "jpeg", "png"])
     
     words = len(message.split()) if message.strip() else 0
     st.caption(f"Evlo periya essay-um ezhudhalam: **{words:,} words** *(Unlimited)*")
     
-    submit_button = st.form_submit_button(" Add to Vishnu's Slam book 🚀", use_container_width=True)
+    submit_button = st.form_submit_button("Add to Vishnu's Slam Book 🚀", use_container_width=True)
 
 if submit_button:
     if not friend_name.strip():
@@ -272,7 +316,6 @@ if admin_password == ADMIN_PASSWORD:
 
     if rows:
         for msg_id, name, emoji, msg, photo_b64, time in rows:
-            # Memory Card Box
             st.markdown(
                 f'<div class="memory-card">'
                 f'<h3 style="margin: 0; padding-bottom: 5px;">{emoji} <b>{name}</b></h3>'
@@ -282,7 +325,6 @@ if admin_password == ADMIN_PASSWORD:
                 unsafe_allow_html=True
             )
             
-            # Display uploaded photo & Save to Gallery button
             if photo_b64:
                 try:
                     img_bytes = base64.b64decode(photo_b64)
@@ -298,7 +340,6 @@ if admin_password == ADMIN_PASSWORD:
                 except Exception:
                     pass
 
-            # 🛑 DELETE CONFIRMATION CHECKBOX & BUTTON (IN SUB-BOX)
             with st.container():
                 st.markdown('<div class="delete-container">', unsafe_allow_html=True)
                 confirm_delete = st.checkbox(f"⚠️ Confirm deletion for Post #{msg_id}", key=f"confirm_{msg_id}")
@@ -317,4 +358,3 @@ if admin_password == ADMIN_PASSWORD:
 
 elif admin_password:
     st.sidebar.error("❌ Incorrect Password!")
-    
