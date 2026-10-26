@@ -108,12 +108,12 @@ def delete_memory(msg_id):
 # ------------------------------------------------------------------------------
 st.title("🎓 Namma Gang Secret Diary ✨")
 st.markdown("### *College mudinjuchu guys... manasula irukkuradha kottitu podhinga!* 💖")
-st.write("Arrears, canteen gossips, mass bunk-u, gang alapparaiga... future-la open panni patha semma sirippa irukum, ezhudhinga peeps!")
+st.write("Arrears, canteen gossips, mass bunk-u, gang alapparaiga... ezhudhinga peeps!")
 
 st.divider()
 
 # ------------------------------------------------------------------------------
-# FORM TO WRITE A MESSAGE
+# FORM TO WRITE A MESSAGE (VISIBLE TO EVERYONE)
 # ------------------------------------------------------------------------------
 with st.form("memory_form", clear_on_submit=True):
     st.markdown("### 📝 Oru Kutty (or Periya) Message-a Thattu")
@@ -156,56 +156,33 @@ if submit_button:
         save_memory(friend_name.strip(), chosen_emoji, message.strip())
         
         st.balloons()
-        st.success("Thank you so much! Your memory has been posted below! ❤️")
+        st.success("Thank you so much! Your secret memory has been saved safely! ❤️")
         st.rerun()
 
 st.divider()
 
 # ------------------------------------------------------------------------------
-# SIDEBAR ADMIN PANEL
+# SIDEBAR ADMIN PANEL & PRIVATE MEMORY WALL
 # ------------------------------------------------------------------------------
 with st.sidebar:
-    st.title("🔒 Admin Panel")
+    st.title("🔒 Admin Access")
     admin_password = st.text_input("Enter Admin Password:", type="password")
+
+if admin_password == ADMIN_PASSWORD:
+    st.sidebar.success("🔓 Access Granted!")
     
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM memories")
-    total_count = cursor.fetchone()[0]
+    cursor.execute("SELECT id, friend_name, emoji, message, submitted_at FROM memories ORDER BY id DESC")
+    rows = cursor.fetchall()
     conn.close()
 
-    if admin_password == ADMIN_PASSWORD:
-        st.success("🔓 Access Granted!")
-        st.metric(label="📊 Total Memories Posted", value=total_count)
-    elif admin_password:
-        st.error("❌ Wrong Password!")
+    st.markdown("## 👑 Admin Portal - All Posted Memories")
+    st.write(f"**Total Secret Memories Received:** `{len(rows)}`")
 
-# ------------------------------------------------------------------------------
-# LIVE MEMORY WALL
-# ------------------------------------------------------------------------------
-st.markdown("## 💌 Namma Gang-oda Memories & Wishes")
-
-conn = sqlite3.connect(DB_PATH)
-cursor = conn.cursor()
-cursor.execute("SELECT id, friend_name, emoji, message, submitted_at FROM memories ORDER BY id DESC")
-rows = cursor.fetchall()
-conn.close()
-
-if rows:
-    for msg_id, name, emoji, msg, time in rows:
-        st.markdown(f"""
-            <div class="memory-card">
-                <h3 style="margin: 0; padding-bottom: 5px;">{emoji} <b>{name}</b></h3>
-                <p style="font-size: 13px; color: #718096; margin-bottom: 15px;"><i>Posted on {time}</i></p>
-                <p style="font-size: 16px; color: #2D3748; white-space: pre-wrap; line-height: 1.6;">{msg}</p>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        # If Admin password is correct, show Delete Button under every post!
-        if admin_password == ADMIN_PASSWORD:
-            if st.button(f"🗑️ Delete Post #{msg_id}", key=f"del_{msg_id}"):
-                delete_memory(msg_id)
-                st.success(f"Post #{msg_id} deleted!")
-                st.rerun()
-else:
-    st.info("No memories posted yet! Be the first one to write above! ✨")
+    if rows:
+        for msg_id, name, emoji, msg, time in rows:
+            st.markdown(f"""
+                <div class="memory-card">
+                    <h3 style="margin: 0; padding-bottom: 5px;">{emoji} <b>{name}</b></h3>
+                    <p style="font-size: 13px; color: #
