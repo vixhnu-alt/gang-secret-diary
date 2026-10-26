@@ -16,46 +16,47 @@ st.set_page_config(
 
 st.markdown("""
     <style>
-    /* Premium Soft Gradient Background */
+    /* 1. Global Gradient Background */
     .stApp {
         background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 50%, #A1C4FD 100%) !important;
     }
-    
-    /* Global Typography - Clean & Modern */
-    html, body, [class*="css"], h1, h2, h3, h4, label, p, span, div {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+
+    /* 2. Global Uniform Typography for Premium Clean Look */
+    html, body, [class*="css"], h1, h2, h3, h4, label, p, span, div, input, textarea, button {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
         color: #1A202C !important;
     }
 
-    /* 🎨 PREMIUM CARD FORM CONTAINER */
+    /* 3. Form Container - Modern Glassmorphism Card */
     div[data-testid="stForm"] {
-        background: rgba(255, 255, 255, 0.75) !important;
-        backdrop-filter: blur(12px) !important;
-        -webkit-backdrop-filter: blur(12px) !important;
+        background: rgba(255, 255, 255, 0.8) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
         padding: 30px !important;
         border-radius: 24px !important;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08) !important;
-        border: 1px solid rgba(255, 255, 255, 0.8) !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;
+        border: 1px solid rgba(255, 255, 255, 0.9) !important;
     }
 
-    /* Form Labels */
+    /* Form Section Titles & Labels */
     div[data-testid="stForm"] label p {
-        font-weight: 700 !important;
         font-size: 15px !important;
+        font-weight: 700 !important;
         color: #2D3748 !important;
         margin-bottom: 6px !important;
     }
 
-    /* 🎨 INPUT FIELD FIXES (PERU & MESSAGE BOX) */
+    /* 4. Input Fields (Text Input & Text Area) */
     .stTextInput input, .stTextArea textarea {
         background-color: #FFFFFF !important;
         color: #1A202C !important;
         -webkit-text-fill-color: #1A202C !important;
         font-size: 15px !important;
         font-weight: 500 !important;
-        border-radius: 12px !important;
+        border-radius: 14px !important;
         border: 1.5px solid #E2E8F0 !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+        padding: 12px 16px !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.02) !important;
     }
 
     .stTextInput input:focus, .stTextArea textarea:focus {
@@ -63,17 +64,17 @@ st.markdown("""
         box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2) !important;
     }
 
-    /* Placeholders Styling */
+    /* Input Placeholders */
     ::placeholder, .stTextInput input::placeholder, .stTextArea textarea::placeholder {
         color: #A0AEC0 !important;
         -webkit-text-fill-color: #A0AEC0 !important;
         font-weight: 400 !important;
     }
 
-    /* 🎨 VIBE DROPDOWN FIX (NO DARK OVERLAY) */
+    /* 5. Dropdown Selection Fix (Solves Dark Box & Unreadable Items Glitch) */
     div[data-baseweb="select"] {
         background-color: #FFFFFF !important;
-        border-radius: 12px !important;
+        border-radius: 14px !important;
         border: 1.5px solid #E2E8F0 !important;
     }
 
@@ -85,22 +86,25 @@ st.markdown("""
         font-size: 15px !important;
     }
 
-    ul[data-baseweb="menu"] {
+    /* Dropdown Open Popup List Styling */
+    ul[data-baseweb="menu"], ul[data-baseweb="menu"] * {
         background-color: #FFFFFF !important;
-        border-radius: 12px !important;
-    }
-
-    ul[data-baseweb="menu"] li {
         color: #1A202C !important;
-        background-color: #FFFFFF !important;
+        -webkit-text-fill-color: #1A202C !important;
+        font-weight: 500 !important;
     }
 
-    /* 🎨 UPLOAD BOX FIX (NO DUPLICATE ICONS/TEXT) */
+    ul[data-baseweb="menu"] li:hover {
+        background-color: #FFF5F5 !important;
+    }
+
+    /* 6. File Uploader Fix (Fixes 'uploadUpload' Icon Text Overlap Glitch) */
     div[data-testid="stFileUploader"] section {
         background-color: #FFFFFF !important;
         border: 2px dashed #CBD5E0 !important;
         border-radius: 16px !important;
         padding: 20px !important;
+        text-align: center !important;
     }
 
     div[data-testid="stFileUploader"] section:hover {
@@ -109,27 +113,32 @@ st.markdown("""
 
     div[data-testid="stFileUploader"] section button {
         background-color: #EDF2F7 !important;
+        color: #2D3748 !important;
         border: none !important;
         border-radius: 10px !important;
         font-weight: 600 !important;
-        color: #2D3748 !important;
+        padding: 8px 16px !important;
+        margin-bottom: 8px !important;
     }
 
     div[data-testid="stFileUploader"] section * {
         color: #4A5568 !important;
+        font-size: 13px !important;
     }
 
-    /* 🚀 SUBMIT BUTTON PREMIUM LOOK */
+    /* 7. Submit Button Styling */
     div[data-testid="stForm"] button[kind="secondaryFormSubmit"] {
         background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%) !important;
         color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
         font-weight: 700 !important;
         font-size: 16px !important;
         border-radius: 14px !important;
         border: none !important;
-        padding: 12px 24px !important;
+        padding: 14px 24px !important;
         box-shadow: 0 8px 20px rgba(255, 107, 107, 0.35) !important;
         transition: all 0.2s ease-in-out !important;
+        margin-top: 10px !important;
     }
 
     div[data-testid="stForm"] button[kind="secondaryFormSubmit"]:hover {
@@ -137,7 +146,7 @@ st.markdown("""
         box-shadow: 0 12px 24px rgba(255, 107, 107, 0.45) !important;
     }
 
-    /* 📖 ADMIN DISPLAY CARDS */
+    /* 8. Admin Cards */
     .memory-card {
         background-color: #FFFFFF !important;
         padding: 24px;
@@ -151,7 +160,6 @@ st.markdown("""
         color: #2D3748 !important;
     }
 
-    /* Delete Container */
     .delete-container {
         background-color: rgba(255, 255, 255, 0.9);
         padding: 16px;
@@ -358,3 +366,4 @@ if admin_password == ADMIN_PASSWORD:
 
 elif admin_password:
     st.sidebar.error("❌ Incorrect Password!")
+    
