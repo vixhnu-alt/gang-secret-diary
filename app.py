@@ -32,18 +32,9 @@ st.markdown("""
     .stTextArea textarea, 
     .stSelectbox div[data-baseweb="select"] {
         background-color: #FFFFFF !important;
-        color: #000000 !important;
+        color: #2D3748 !important;
         border-radius: 12px !important;
         border: 1px solid #CBD5E0 !important;
-    }
-
-    /* 👁️ PLACEHOLDER TEXT VISIBILITY FIX (Make placeholder text dark & readable) */
-    ::placeholder, 
-    .stTextInput input::placeholder, 
-    .stTextArea textarea::placeholder {
-        color: #4A5568 !important;
-        -webkit-text-fill-color: #4A5568 !important;
-        opacity: 0.85 !important;
     }
 
     /* Dropdown Selected Text & Options */
@@ -182,12 +173,12 @@ st.divider()
 with st.form("memory_form", clear_on_submit=True):
     st.markdown("### 📝 Oru Kutty (or Periya) Message-a Thattu")
     
-    friend_name = st.text_input("Yaaru adhu? (Name / Nickname) ✨", placeholder="")
+    friend_name = st.text_input("Yaaru adhu? (Name / Nickname) ✨", placeholder="Type un peru here Bestie...")
     
     selected_emoji = st.selectbox(
         "Namma Gang Vibe Enna? 😎",
         [
-            "❤️ Close Friend / Paasam", 
+            "❤️ Bestie / Paasam", 
             "🎓 Degree Vangitom", 
             "🔥 Mass-u Vibe", 
             "😂 Sirichu Sethoda (Fun)", 
@@ -268,7 +259,7 @@ if admin_password == ADMIN_PASSWORD:
             # Display uploaded photo & Save to Gallery button
             if photo_b64:
                 try:
-                    img_bytes = base64.b64encode(photo_b64)
+                    img_bytes = base64.b64decode(photo_b64)
                     st.image(img_bytes, caption=f"Photo by {name}", use_column_width=True)
                     
                     st.download_button(
