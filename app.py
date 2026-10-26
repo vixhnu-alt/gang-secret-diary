@@ -82,17 +82,7 @@ def save_memory(name, emoji, message):
     filename = f"Memory_{safe_name}_{file_timestamp}.txt"
     filepath = os.path.join(LOCAL_BACKUP_DIR, filename)
 
-    content = f"""========================================
-COLLEGE FAREWELL MEMORY
-========================================
-From: {name}
-Mood / Vibe: {emoji}
-Date: {timestamp}
-========================================
-
-MESSAGE:
-{message}
-"""
+    content = f"From: {name}\nMood: {emoji}\nDate: {timestamp}\n\nMessage:\n{message}"
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(content)
 
@@ -182,7 +172,21 @@ if admin_password == ADMIN_PASSWORD:
 
     if rows:
         for msg_id, name, emoji, msg, time in rows:
-            st.markdown(f"""
-                <div class="memory-card">
-                    <h3 style="margin: 0; padding-bottom: 5px;">{emoji} <b>{name}</b></h3>
-                    <p style="font-size: 13px; color: #
+            st.markdown(
+                f'<div class="memory-card">'
+                f'<h3 style="margin: 0; padding-bottom: 5px;">{emoji} <b>{name}</b></h3>'
+                f'<p style="font-size: 13px; color: #718096; margin-bottom: 15px;"><i>Posted on {time}</i></p>'
+                f'<p style="font-size: 16px; color: #2D3748; white-space: pre-wrap; line-height: 1.6;">{msg}</p>'
+                f'</div>',
+                unsafe_allow_html=True
+            )
+            
+            if st.button(f"🗑️ Delete Post #{msg_id}", key=f"del_{msg_id}"):
+                delete_memory(msg_id)
+                st.success(f"Post #{msg_id} deleted!")
+                st.rerun()
+    else:
+        st.info("No memories submitted yet.")
+
+elif admin_password:
+    st.sidebar.error("❌ Incorrect Password!")
