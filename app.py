@@ -19,17 +19,28 @@ st.markdown("""
     .stApp {
         background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 50%, #A1C4FD 100%);
     }
-    h1, h2, h3 {
+    h1, h2, h3, h4, label, p, span, div {
         color: #2D3748 !important;
         font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
     }
     .memory-card {
-        background-color: white;
+        background-color: #FFFFFF !important;
         padding: 20px;
         border-radius: 20px;
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         border-left: 6px solid #FF6B6B;
+    }
+    .memory-card p, .memory-card h3, .memory-card span {
+        color: #2D3748 !important;
+    }
+    .delete-container {
+        background-color: rgba(255, 255, 255, 0.75);
+        padding: 15px;
+        border-radius: 12px;
+        border: 1px solid #E2E8F0;
+        margin-top: 10px;
+        margin-bottom: 25px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -37,7 +48,7 @@ st.markdown("""
 DB_PATH = "college_memories.db"
 LOCAL_BACKUP_DIR = "drive_backup_memories"
 
-# 🔑 SET YOUR SECRET ADMIN PASSWORD HERE
+# 🔑 YOUR SECRET ADMIN PASSWORD
 ADMIN_PASSWORD = "Arovis@191025"
 
 # ------------------------------------------------------------------------------
@@ -110,7 +121,7 @@ def delete_memory(msg_id):
 # ------------------------------------------------------------------------------
 st.title("🎓 Vishnu's Slam Book ✨")
 st.markdown("### *College mudinjuchu guys... manasula irukkuradha kottitu podhinga!* 💖")
-st.write("Enna Pathi Enna nenachingalo Adha pathi Solunga ")
+st.write("Enna Pathi Enna nenachingalo Adha pathi Solunga")
 
 st.divider()
 
@@ -193,6 +204,7 @@ if admin_password == ADMIN_PASSWORD:
 
     if rows:
         for msg_id, name, emoji, msg, photo_b64, time in rows:
+            # Memory Card Box
             st.markdown(
                 f'<div class="memory-card">'
                 f'<h3 style="margin: 0; padding-bottom: 5px;">{emoji} <b>{name}</b></h3>'
@@ -202,23 +214,34 @@ if admin_password == ADMIN_PASSWORD:
                 unsafe_allow_html=True
             )
             
-            # Display uploaded photo if available
+            # Display uploaded photo & Save to Gallery button
             if photo_b64:
                 try:
                     img_bytes = base64.b64decode(photo_b64)
                     st.image(img_bytes, caption=f"Photo by {name}", use_column_width=True)
+                    
+                    st.download_button(
+                        label=f"📥 Save Photo to Gallery ({name})",
+                        data=img_bytes,
+                        file_name=f"Farewell_Photo_{name}_{msg_id}.png",
+                        mime="image/png",
+                        key=f"dl_{msg_id}"
+                    )
                 except Exception:
                     pass
 
-            # 🛑 DELETE CONFIRMATION CHECKBOX & BUTTON
-            confirm_delete = st.checkbox(f"⚠️ Confirm deletion for Post #{msg_id}", key=f"confirm_{msg_id}")
-            if st.button(f"🗑️ Delete Post #{msg_id}", key=f"del_{msg_id}"):
-                if confirm_delete:
-                    delete_memory(msg_id)
-                    st.success(f"Post #{msg_id} deleted successfully!")
-                    st.rerun()
-                else:
-                    st.warning("Please check the confirmation box above before deleting!")
+            # 🛑 DELETE CONFIRMATION CHECKBOX & BUTTON (IN SUB-BOX)
+            with st.container():
+                st.markdown('<div class="delete-container">', unsafe_allow_html=True)
+                confirm_delete = st.checkbox(f"⚠️ Confirm deletion for Post #{msg_id}", key=f"confirm_{msg_id}")
+                if st.button(f"🗑️ Delete Post #{msg_id}", key=f"del_{msg_id}"):
+                    if confirm_delete:
+                        delete_memory(msg_id)
+                        st.success(f"Post #{msg_id} deleted successfully!")
+                        st.rerun()
+                    else:
+                        st.warning("Please check the confirmation box above before deleting!")
+                st.markdown('</div>', unsafe_allow_html=True)
 
             st.divider()
     else:
@@ -226,3 +249,4 @@ if admin_password == ADMIN_PASSWORD:
 
 elif admin_password:
     st.sidebar.error("❌ Incorrect Password!")
+    
