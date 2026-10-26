@@ -21,38 +21,42 @@ st.markdown("""
         background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 50%, #A1C4FD 100%);
     }
     
-    /* General Typography Fix */
-    h1, h2, h3, h4, label, p, span, div {
+    /* 🎯 UNIFORM FONT FOR ALL ELEMENTS (TITLES, LABELS, INPUTS, PLACEHOLDERS) */
+    html, body, [class*="css"], h1, h2, h3, h4, label, p, span, div, input, textarea, button, select {
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
         color: #2D3748 !important;
-        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
     }
 
-    /* 🎨 INPUT BOXES BACKGROUND COLOR FIX (White Background + Dark Text) */
+    /* 🎨 INPUT BOXES BACKGROUND & TEXT FONT MATCH */
     .stTextInput input, 
     .stTextArea textarea, 
     .stSelectbox div[data-baseweb="select"] {
         background-color: #FFFFFF !important;
         color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
         border-radius: 12px !important;
         border: 1px solid #CBD5E0 !important;
     }
 
-    /* 👁️ PLACEHOLDER TEXT VISIBILITY FIX (Make placeholder text dark & readable) */
+    /* 👁️ PLACEHOLDER FONT & COLOR VISIBILITY MATCH */
     ::placeholder, 
     .stTextInput input::placeholder, 
     .stTextArea textarea::placeholder {
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
         color: #4A5568 !important;
         -webkit-text-fill-color: #4A5568 !important;
         opacity: 0.85 !important;
     }
 
-    /* Dropdown Selected Text & Options */
+    /* Dropdown Selected Text & Options Font */
     .stSelectbox div[role="button"] {
         background-color: #FFFFFF !important;
         color: #2D3748 !important;
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
     }
 
-    /* File Uploader Container Fix */
+    /* File Uploader Container */
     div[data-testid="stFileUploader"] section {
         background-color: #FFFFFF !important;
         border: 2px dashed #FF6B6B !important;
@@ -61,6 +65,7 @@ st.markdown("""
     
     div[data-testid="stFileUploader"] section * {
         color: #2D3748 !important;
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
     }
 
     /* Form Container Box */
@@ -82,6 +87,7 @@ st.markdown("""
     }
     .memory-card p, .memory-card h3, .memory-card span {
         color: #2D3748 !important;
+        font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
     }
     
     /* Delete Confirmation Sub-Box */
@@ -268,7 +274,7 @@ if admin_password == ADMIN_PASSWORD:
             # Display uploaded photo & Save to Gallery button
             if photo_b64:
                 try:
-                    img_bytes = base64.b64encode(photo_b64)
+                    img_bytes = base64.b64decode(photo_b64)
                     st.image(img_bytes, caption=f"Photo by {name}", use_column_width=True)
                     
                     st.download_button(
@@ -300,4 +306,3 @@ if admin_password == ADMIN_PASSWORD:
 
 elif admin_password:
     st.sidebar.error("❌ Incorrect Password!")
-    
