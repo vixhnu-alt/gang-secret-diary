@@ -3,6 +3,7 @@ import sqlite3
 import datetime
 import zoneinfo
 import os
+import base64
 
 # ------------------------------------------------------------------------------
 # PAGE CONFIGURATION & STYLING
@@ -37,7 +38,7 @@ DB_PATH = "college_memories.db"
 LOCAL_BACKUP_DIR = "drive_backup_memories"
 
 # 🔑 SET YOUR SECRET ADMIN PASSWORD HERE
-ADMIN_PASSWORD = "Arovis@191025"
+ADMIN_PASSWORD = "namma-admin-123"
 
 # ------------------------------------------------------------------------------
 # DATABASE SETUP
@@ -51,6 +52,7 @@ def init_storage():
             friend_name TEXT NOT NULL,
             emoji TEXT NOT NULL,
             message TEXT NOT NULL,
+            photo_data TEXT,
             submitted_at TEXT NOT NULL
         )
     """)
@@ -62,7 +64,7 @@ def init_storage():
 
 init_storage()
 
-def save_memory(name, emoji, message):
+def save_memory(name, emoji, message, photo_b64):
     ist = zoneinfo.ZoneInfo("Asia/Kolkata")
     timestamp = datetime.datetime.now(ist).strftime("%d %B %Y, %I:%M %p")
     file_timestamp = datetime.datetime.now(ist).strftime("%Y%m%d_%H%M%S")
@@ -71,9 +73,9 @@ def save_memory(name, emoji, message):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("""
-        INSERT INTO memories (friend_name, emoji, message, submitted_at)
-        VALUES (?, ?, ?, ?)
-    """, (name, emoji, message, timestamp))
+        INSERT INTO memories (friend_name, emoji, message, photo_data, submitted_at)
+        VALUES (?, ?, ?, ?, ?)
+    """, (name, emoji, message, photo_b64, timestamp))
     conn.commit()
     conn.close()
 
@@ -82,7 +84,7 @@ def save_memory(name, emoji, message):
     filename = f"Memory_{safe_name}_{file_timestamp}.txt"
     filepath = os.path.join(LOCAL_BACKUP_DIR, filename)
 
-    content = f"From: {name}\nMood: {emoji}\nDate: {timestamp}\n\nMessage:\n{message}"
+    content = f"From: {name}\nMood: {emoji}\nDate: {timestamp}\nPhoto Attached: {'Yes' if photo_b64 else 'No'}\n\nMessage:\n{message}"
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(content)
 
@@ -98,12 +100,12 @@ def delete_memory(msg_id):
 # ------------------------------------------------------------------------------
 st.title("🎓 Namma Gang Secret Diary ✨")
 st.markdown("### *College mudinjuchu guys... manasula irukkuradha kottitu podhinga!* 💖")
-st.write("Arrears, canteen gossips, mass bunk-u, gang alapparaiga... ezhudhinga peeps!")
+st.write("Arrears, canteen gossips, mass bunk-u, photos & memories... ezhudhinga peeps!")
 
 st.divider()
 
 # ------------------------------------------------------------------------------
-# FORM TO WRITE A MESSAGE (VISIBLE TO EVERYONE)
+# FORM TO WRITE A MESSAGE & UPLOAD PHOTO (VISIBLE TO EVERYONE)
 # ------------------------------------------------------------------------------
 with st.form("memory_form", clear_on_submit=True):
     st.markdown("### 📝 Oru Kutty (or Periya) Message-a Thattu")
@@ -127,9 +129,12 @@ with st.form("memory_form", clear_on_submit=True):
     
     message = st.text_area(
         "Namma Senthu Panna Alapparaiga / Secrets 💬",
-        height=250,
+        height=200,
         placeholder="Unakku enna thonudho adha ezhudhu... No limit, fulla thallu! ❤️🥳✨"
     )
+    
+    # 📸 Photo Upload Option
+    uploaded_photo = st.file_uploader("📸 Add a Photo / Memory (Optional)", type=["jpg", "jpeg", "png"])
     
     words = len(message.split()) if message.strip() else 0
     st.caption(f"Evlo periya essay-um ezhudhalam: **{words:,} words** *(Unlimited)*")
@@ -139,14 +144,20 @@ with st.form("memory_form", clear_on_submit=True):
 if submit_button:
     if not friend_name.strip():
         st.error("Please enter your name first! 😊")
-    elif not message.strip():
-        st.error("Please write a message before posting! 💬")
+    elif not message.strip() and not uploaded_photo:
+        st.error("Please write a message or upload a photo before posting! 💬")
     else:
         chosen_emoji = selected_emoji.split()[0]
-        save_memory(friend_name.strip(), chosen_emoji, message.strip())
+        
+        photo_b64 = None
+        if uploaded_photo is not None:
+            photo_bytes = uploaded_photo.read()
+            photo_b64 = base64.b64encode(photo_bytes).decode("utf-8")
+
+        save_memory(friend_name.strip(), chosen_emoji, message.strip(), photo_b64)
         
         st.balloons()
-        st.success("Thank you so much! Your secret memory has been saved safely! ❤️")
+        st.success("Thank you so much! Your secret memory and photo have been saved safely! ❤️")
         st.rerun()
 
 st.divider()
@@ -163,7 +174,7 @@ if admin_password == ADMIN_PASSWORD:
     
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.execute("SELECT id, friend_name, emoji, message, submitted_at FROM memories ORDER BY id DESC")
+    cursor.execute("SELECT id, friend_name, emoji, message, photo_data, submitted_at FROM memories ORDER BY id DESC")
     rows = cursor.fetchall()
     conn.close()
 
@@ -171,7 +182,7 @@ if admin_password == ADMIN_PASSWORD:
     st.write(f"**Total Secret Memories Received:** `{len(rows)}`")
 
     if rows:
-        for msg_id, name, emoji, msg, time in rows:
+        for msg_id, name, emoji, msg, photo_b64, time in rows:
             st.markdown(
                 f'<div class="memory-card">'
                 f'<h3 style="margin: 0; padding-bottom: 5px;">{emoji} <b>{name}</b></h3>'
@@ -181,10 +192,19 @@ if admin_password == ADMIN_PASSWORD:
                 unsafe_allow_html=True
             )
             
+            # Display uploaded photo if available
+            if photo_b64:
+                try:
+                    img_bytes = base64.b64decode(photo_b64)
+                    st.image(img_bytes, caption=f"Photo by {name}", use_column_width=True)
+                except Exception:
+                    pass
+
             if st.button(f"🗑️ Delete Post #{msg_id}", key=f"del_{msg_id}"):
                 delete_memory(msg_id)
                 st.success(f"Post #{msg_id} deleted!")
                 st.rerun()
+            st.divider()
     else:
         st.info("No memories submitted yet.")
 
